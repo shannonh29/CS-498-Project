@@ -13,10 +13,6 @@ router.get('/', async (req, res, next) => {
     const start = new Date(start_date);
     const end = new Date(end_date);
 
-    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-      return res.status(400).json({ message: 'Invalid date format. Use YYYY-MM-DD' });
-    }
-
     if (end.getTime() - start.getTime() !== 24 * 60 * 60 * 1000) {
       return res.status(400).json({
         message: 'end_date must be exactly 1 day after start_date'
@@ -28,6 +24,7 @@ router.get('/', async (req, res, next) => {
     const results = await db.collection('calendar').aggregate([
       {
         $match: {
+          city: 'Portland, OR',
           available: true,
           date: { $in: [start, end] }
         }
@@ -56,7 +53,6 @@ router.get('/', async (req, res, next) => {
       },
       {
         $project: {
-          _id: '$listing._id',
           id: '$listing.id',
           name: '$listing.name',
           neighborhood: '$listing.neighbourhood_cleansed',
@@ -65,8 +61,7 @@ router.get('/', async (req, res, next) => {
           property_type: '$listing.property_type',
           amenities: '$listing.amenities',
           price: '$listing.price',
-          avg_rating: '$listing.review_scores_rating',
-          listing_url: '$listing.listing_url'
+          avg_rating: '$listing.review_scores_rating'
         }
       },
       {

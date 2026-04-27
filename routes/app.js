@@ -5,7 +5,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
-const query1Router = require('./query1');
+const query1Router = require('./query1.js');
+const query2Router = require('./query2.js');
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/query1', query1Router);
+app.use('/api/query2', query2Router);
 
 app.get('/api/health', (req, res) => {
   res.json({ ok: true });
