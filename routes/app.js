@@ -7,6 +7,8 @@ const cors = require('cors');
 
 const query1Router = require('./query1.js');
 const query2Router = require('./query2.js');
+const query5Router = require('./query5.js');
+const query3Router = require('./query3.js');
 
 const app = express();
 
@@ -19,6 +21,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/query1', query1Router);
 app.use('/api/query2', query2Router);
+app.use('/api/query5', query5Router);
+app.use('/api/query3', query3Router);
 
 app.get('/api/health', (req, res) => {
   res.json({ ok: true });
